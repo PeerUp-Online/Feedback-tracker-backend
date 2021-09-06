@@ -1,0 +1,12 @@
+const GetAllProducts = (req, res) => {
+    res.status(200).json({
+        status: 'success',
+        code: 200,
+        message: 'Your password is changed',
+        response: {
+            name: 'Sidharth',
+        },
+    })
+}
+
+module.exports = { GetAllProducts }
