@@ -3,6 +3,8 @@ const cors = require('cors')
 const morgan = require('morgan')
 const AuthRouter = require('./routes/authRoute')
 const ProductRouter = require('./routes/productsRoute')
+const AppError = require('./utils/appError')
+const GlobalErrorHandler = require('./controllers/errors')
 
 /**
  * Init Express App
@@ -38,5 +40,14 @@ App.use('/api/v1/auth', AuthRouter)
  * Products API ROUTER: Requires Authorization
  */
 App.use('/api/v1/products', ProductRouter)
+
+/**
+ * Capture unhandled Routes
+ */
+App.all('*', (req, res, next) => {
+    next(new AppError(`Can't find ${req.originalUrl} on this server.`))
+})
+
+App.use(GlobalErrorHandler)
 
 module.exports = App
