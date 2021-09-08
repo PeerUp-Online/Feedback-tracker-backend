@@ -1,10 +1,11 @@
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
+const UsersRouter = require('./routes/usersRoute')
 const AuthRouter = require('./routes/authRoute')
 const ProductRouter = require('./routes/productsRoute')
 const AppError = require('./utils/appError')
-const GlobalErrorHandler = require('./controllers/errors')
+const GlobalErrorHandler = require('./middlewares/globalError')
 
 /**
  * Init Express App
@@ -32,7 +33,12 @@ App.use((req, res, next) => {
 })
 
 /**
- * Auth API ROUTER: PUBLIC
+ * Users API ROUTER: PUBLIC
+ */
+App.use('/api/v1/users', UsersRouter)
+
+/**
+ * Users API ROUTER: PUBLIC
  */
 App.use('/api/v1/auth', AuthRouter)
 
@@ -45,7 +51,7 @@ App.use('/api/v1/products', ProductRouter)
  * Capture unhandled Routes
  */
 App.all('*', (req, res, next) => {
-    next(new AppError(`Can't find ${req.originalUrl} on this server.`))
+    next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404))
 })
 
 App.use(GlobalErrorHandler)

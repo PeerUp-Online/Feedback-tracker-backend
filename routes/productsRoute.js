@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const { GetAllProducts } = require('../controllers/products')
+const { GetAllProducts } = require('../services/products')
 
 const ProductRouter = Router()
 

@@ -1,23 +1,21 @@
 const { Router } = require('express')
-const {
-    ResetPasswordController,
-    SignInController,
-    SignUpController,
-} = require('../controllers/auth')
+const auth = require('../services/auth')
 
 const AuthRouter = Router()
 
 /**
- * ? POST / Signin route
+ * ? POST / Signin or Login route
  */
-AuthRouter.route('/').post(SignInController)
+AuthRouter.route('/signin').post(auth.SignIn)
+
 /**
- * ? POST / Signup route
+ * ? POST / Signup or Register route
  */
-AuthRouter.route('/signup').post(SignUpController)
+AuthRouter.route('/signup').post(auth.SignUp)
+
 /**
  * ? POST / Reset Password route
  */
-AuthRouter.route('/reset').post(ResetPasswordController)
+AuthRouter.route('/reset').post(auth.ResetPassword)
 
 module.exports = AuthRouter
