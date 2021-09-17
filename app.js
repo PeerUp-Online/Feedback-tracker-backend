@@ -1,8 +1,8 @@
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
-const UsersRouter = require('./routes/usersRoute')
 const AuthRouter = require('./routes/authRoute')
+const UsersRouter = require('./routes/usersRoute')
 const ProductRouter = require('./routes/productsRoute')
 const AppError = require('./utils/appError')
 const GlobalErrorHandler = require('./middlewares/globalError')
@@ -35,12 +35,12 @@ App.use((req, res, next) => {
 /**
  * Users API ROUTER: PUBLIC
  */
-App.use('/api/v1/users', UsersRouter)
+App.use('/api/v1/auth', AuthRouter)
 
 /**
  * Users API ROUTER: PUBLIC
  */
-App.use('/api/v1/auth', AuthRouter)
+App.use('/api/v1/users', UsersRouter)
 
 /**
  * Products API ROUTER: Requires Authorization

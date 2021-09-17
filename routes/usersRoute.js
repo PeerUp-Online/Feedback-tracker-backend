@@ -1,11 +1,13 @@
 const { Router } = require('express')
-const users = require('../services/users')
+const checkAuth = require('../middlewares/checkAuth')
 
 const UsersRouter = Router()
+
+// Check for auth headers
+UsersRouter.use(checkAuth)
 
 /**
  * ? GET / fetch all users route
  */
-UsersRouter.route('/').get(users.GetAllUsers)
 
 module.exports = UsersRouter

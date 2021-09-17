@@ -16,6 +16,7 @@
         "lint": "eslint --fix ."
     },
     "dependencies": {
+        "@sendgrid/mail": "^7.4.6",
         "axios": "^0.21.3",
         "bcryptjs": "^2.4.3",
         "chalk": "^4.1.2",

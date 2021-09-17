@@ -3,7 +3,7 @@ const AppError = require('../utils/appError')
 
 /**
  * Show full errors during development using
- * `handleDevError` function
+ * ?`handleDevError` function
  */
 const handleDevError = (err, res) => {
     console.error(chalk.redBright('Error: ', err.message))
@@ -15,9 +15,10 @@ const handleDevError = (err, res) => {
         trace: err.stack,
     })
 }
+
 /**
  *  Hide error details during production using
- * `handleProdError` function
+ * ?`handleProdError` function
  */
 const handleProdError = (err, res) => {
     if (err.isOperational) {
@@ -25,22 +26,34 @@ const handleProdError = (err, res) => {
             status: err.status,
             message: err.message,
         })
-    } else {
-        res.status(500).json({
-            status: 'error',
-            message: 'Ahh something went very wrong!',
-        })
     }
+    res.status(500).json({
+        status: 'error',
+        message: 'Ahh something went very wrong!',
+    })
 }
 /**
  * Customize DB cast errors during production using
- * `handleCastError` function
+ * ?`handleCastError` function
  */
 const handleCastError = err => {
     const message = `Invalid ${err.path}: ${err.value}`
     return new AppError(message, 400)
 }
 
+/**
+ * Handle invalid token errors during production using
+ * ?`handleInvalidTokenError` function
+ */
+const handleInvalidTokenError = () => {
+    const message = `Invalid auth token, please sign in again.`
+    return new AppError(message, 401)
+}
+
+/**
+ * Handle mongoose validation errors during production using
+ * ?`handleValidationError` function
+ */
 const handleValidationError = err => {
     const errors = Object.values(err.errors).map(el => el.message)
     const message = `Invalid input data: ${errors.join(' ')}`
@@ -48,9 +61,21 @@ const handleValidationError = err => {
     return new AppError(message, 400)
 }
 
+/**
+ * Handle expired token errors during production using
+ * ?`handleExpiredTokenError` function
+ */
+const handleExpiredTokenError = () => {
+    const message = `Your auth token has expired, please sign in again.`
+    return new AppError(message, 401)
+}
+
+/**
+ * Handle duplicate keys errors during production using
+ * ?`handleDuplicatesError` function
+ */
 const handleDuplicatesError = err => {
     const value = err.message.match(/(?:"[^"]*"|^[^"]*$)/)[0].replace(/"/g, '')
-
     const message = `Duplicate value found: '${value}' , Please use another value.`
     return new AppError(message, 400)
 }
@@ -72,6 +97,12 @@ module.exports = (err, req, res, next) => {
         }
         if (err.name === 'ValidationError') {
             error = handleValidationError(error)
+        }
+        if (err.name === 'JsonWebTokenError') {
+            error = handleInvalidTokenError(error)
+        }
+        if (err.name === 'TokenExpiredError') {
+            error = handleExpiredTokenError(error)
         }
 
         handleProdError(error, res)

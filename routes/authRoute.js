@@ -1,4 +1,5 @@
 const { Router } = require('express')
+const checkAuth = require('../middlewares/checkAuth')
 const auth = require('../services/auth')
 
 const AuthRouter = Router()
@@ -14,8 +15,17 @@ AuthRouter.route('/signin').post(auth.SignIn)
 AuthRouter.route('/signup').post(auth.SignUp)
 
 /**
+ * ? POST / Forgot Password route
+ */
+AuthRouter.route('/forgotpassword').post(auth.ForgotPassword)
+
+/**
  * ? POST / Reset Password route
  */
-AuthRouter.route('/reset').post(auth.ResetPassword)
+AuthRouter.route('/resetpassword/:token').patch(auth.ResetPassword)
+
+AuthRouter.use(checkAuth)
+
+AuthRouter.route('/me').get(auth.GetCurrentUser)
 
 module.exports = AuthRouter
