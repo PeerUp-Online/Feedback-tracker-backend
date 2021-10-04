@@ -1,7 +1,7 @@
-const catchAsync = require('../utils/catchAsync')
-const AppError = require('../utils/appError')
-const User = require('../models/userModal')
-const verifyToken = require('../utils/verifyToken')
+const catchAsync = require('../helpers/catchAsync')
+const AppError = require('../helpers/appError')
+const User = require('../models/user.model')
+const verifyToken = require('../helpers/verifyToken')
 
 module.exports = catchAsync(async (req, res, next) => {
     let token

@@ -1,9 +1,9 @@
-const Product = require('../models/productModal')
-const catchAsync = require('../utils/catchAsync')
-const verifyToken = require('../utils/verifyToken')
-const User = require('../models/userModal')
-const Feature = require('../models/featureModal')
-const AppError = require('../utils/appError')
+const Product = require('../models/product.model')
+const catchAsync = require('../helpers/catchAsync')
+const verifyToken = require('../helpers/verifyToken')
+const User = require('../models/user.model')
+const Feature = require('../models/feature.model')
+const AppError = require('../helpers/appError')
 
 const GetAllProducts = catchAsync(async (req, res, next) => {
     const list = await Product.find().populate('features')

@@ -1,5 +1,5 @@
 const chalk = require('chalk')
-const AppError = require('../utils/appError')
+const AppError = require('../helpers/appError')
 
 /**
  * Show full errors during development using
@@ -22,7 +22,7 @@ const handleDevError = (err, res) => {
  */
 const handleProdError = (err, res) => {
     if (err.isOperational) {
-        res.status(err.statusCode).json({
+        return res.status(err.statusCode).json({
             status: err.status,
             message: err.message,
         })

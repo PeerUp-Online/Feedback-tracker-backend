@@ -1,12 +1,12 @@
 const { Router } = require('express')
-const checkAuth = require('../middlewares/checkAuth')
+const checkAuth = require('../middlewares/auth.middleware')
 const {
     GetAllProducts,
     AddNewProduct,
     GetProductById,
     AddFeature,
     VoteFeature,
-} = require('../services/products')
+} = require('../services/product.service')
 
 const ProductRouter = Router()
 
