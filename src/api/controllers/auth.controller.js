@@ -75,11 +75,11 @@ const SignUp = catchAsync(async (req, res, next) => {
 
 const GetCurrentUser = catchAsync(async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1]
-    const currentUser = service.getCurrentUser(token)
+    const user = await service.getCurrentUser(token)
 
     res.status(200).json({
         status: 'success',
-        data: { ...currentUser },
+        data: user,
     })
 })
 
