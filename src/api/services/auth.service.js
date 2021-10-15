@@ -97,19 +97,10 @@ const signUp = async (data) => {
     return { user, token }
 }
 
-const getCurrentUser = async (userToken) => {
-    const token = await verifyToken(userToken)
-    console.log('token: ', token);
-
-    const user = await User.findById(token.id)
-
-    return user
-}
 
 module.exports = {
     signIn,
     signUp,
     sendResetToken,
     updatePassword,
-    getCurrentUser,
 }

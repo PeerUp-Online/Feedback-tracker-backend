@@ -26,6 +26,5 @@ AuthRouter.route('/resetpassword/:token').patch(controller.ResetPassword)
 
 AuthRouter.use(checkAuth)
 
-AuthRouter.route('/me').get(controller.GetCurrentUser)
 
 module.exports = AuthRouter

@@ -1,6 +1,12 @@
 const service = require('../services/auth.service')
 const catchAsync = require('../helpers/catchAsync')
 
+const cookieConfig = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV !== 'development',
+}
+console.log(cookieConfig);
+
 const ResetPassword = catchAsync(async (req, res, next) => {
     const { token } = req.params
     const { password, passwordConfirm } = req.body
@@ -11,10 +17,7 @@ const ResetPassword = catchAsync(async (req, res, next) => {
         password
     )
 
-    res.cookie('token', signedToken, {
-        httpOnly: true,
-        secure: true,
-    })
+    res.cookie('token', signedToken, cookieConfig)
 
     res.status(200).json({
         status: 'success',
@@ -46,10 +49,7 @@ const SignIn = catchAsync(async (req, res, next) => {
 
     const token = await service.signIn(email, password)
 
-    res.cookie('token', token, {
-        httpOnly: true,
-        secure: true,
-    })
+    res.cookie('token', token, cookieConfig)
 
     res.status(200).json({
         status: 'success',
@@ -74,10 +74,7 @@ const SignUp = catchAsync(async (req, res, next) => {
         passwordConfirm,
     })
 
-    res.cookie('token', token, {
-        httpOnly: true,
-        secure: true,
-    })
+    res.cookie('token', token, cookieConfig)
 
     res.status(200).json({
         status: 'success',
@@ -86,19 +83,9 @@ const SignUp = catchAsync(async (req, res, next) => {
     })
 })
 
-const GetCurrentUser = catchAsync(async (req, res, next) => {
-    const user = req.user
-
-    res.status(200).json({
-        status: 'success',
-        data: user,
-    })
-})
-
 module.exports = {
     SignIn,
     SignUp,
     ForgotPassword,
     ResetPassword,
-    GetCurrentUser,
 }

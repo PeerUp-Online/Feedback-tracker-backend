@@ -4,9 +4,10 @@ const User = require('../models/user.model')
 const verifyToken = require('../helpers/verifyToken')
 
 module.exports = catchAsync(async (req, res, next) => {
-    let token
     // Check if `req` has any headers attached
-    
+
+    let token
+
     if (req.cookies.token) {
         token = req.cookies.token
     } else if (
@@ -40,6 +41,8 @@ module.exports = catchAsync(async (req, res, next) => {
      * if no user found, send back an App Error to the client
      */
     if (!freshedUser) {
+        res.cookie('token', null)
+
         return next(
             new AppError(
                 `The token belonging to this user, does no longer exists.`,
@@ -49,6 +52,8 @@ module.exports = catchAsync(async (req, res, next) => {
     }
 
     if (freshedUser.isPasswordChangedAfter(verifiedToken.iat)) {
+        res.cookie('token', null)
+
         return next(
             new AppError(
                 `User recently changed password, please login again.`,
