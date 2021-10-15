@@ -6,7 +6,10 @@ const verifyToken = require('../helpers/verifyToken')
 module.exports = catchAsync(async (req, res, next) => {
     let token
     // Check if `req` has any headers attached
-    if (
+    
+    if (req.cookies.token) {
+        token = req.cookies.token
+    } else if (
         req.headers.authorization &&
         req.headers.authorization.startsWith('Bearer')
     ) {

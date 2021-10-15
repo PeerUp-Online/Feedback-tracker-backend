@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
+const cookieParser = require('cookie-parser')
 
 module.exports = (App) => {
     /**
@@ -11,7 +12,8 @@ module.exports = (App) => {
      */
     App.use(express.json())
     App.use(cors())
-
+    App.use(cookieParser())
+    
     // Add logger in development
     if (process.NODE_ENV !== 'production') {
         App.use(morgan('dev'))

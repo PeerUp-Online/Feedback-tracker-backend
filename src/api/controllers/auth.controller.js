@@ -1,7 +1,5 @@
 const service = require('../services/auth.service')
 const catchAsync = require('../helpers/catchAsync')
-const User = require('../models/user.model')
-const verifyToken = require('../helpers/verifyToken')
 
 const ResetPassword = catchAsync(async (req, res, next) => {
     const { token } = req.params
@@ -12,6 +10,11 @@ const ResetPassword = catchAsync(async (req, res, next) => {
         passwordConfirm,
         password
     )
+
+    res.cookie('token', signedToken, {
+        httpOnly: true,
+        secure: true,
+    })
 
     res.status(200).json({
         status: 'success',
@@ -43,6 +46,11 @@ const SignIn = catchAsync(async (req, res, next) => {
 
     const token = await service.signIn(email, password)
 
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: true,
+    })
+
     res.status(200).json({
         status: 'success',
         message: 'You are authenticated',
@@ -66,6 +74,11 @@ const SignUp = catchAsync(async (req, res, next) => {
         passwordConfirm,
     })
 
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: true,
+    })
+
     res.status(200).json({
         status: 'success',
         message: 'Account created successfully',
@@ -74,8 +87,7 @@ const SignUp = catchAsync(async (req, res, next) => {
 })
 
 const GetCurrentUser = catchAsync(async (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1]
-    const user = await service.getCurrentUser(token)
+    const user = req.user
 
     res.status(200).json({
         status: 'success',
