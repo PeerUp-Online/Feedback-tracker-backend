@@ -79,7 +79,7 @@ const signIn = async (email, password) => {
 
     const token = signToken({ id: user._id, name: user.name })
 
-    return token
+    return { token, user: { id: user._id, name: user.name, email: user.email } }
 }
 
 const signUp = async (data) => {
@@ -96,7 +96,6 @@ const signUp = async (data) => {
 
     return { user, token }
 }
-
 
 module.exports = {
     signIn,

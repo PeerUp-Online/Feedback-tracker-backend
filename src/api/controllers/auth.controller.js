@@ -5,7 +5,7 @@ const cookieConfig = {
     httpOnly: true,
     secure: process.env.NODE_ENV !== 'development',
 }
-console.log(cookieConfig);
+console.log(cookieConfig)
 
 const ResetPassword = catchAsync(async (req, res, next) => {
     const { token } = req.params
@@ -47,7 +47,7 @@ const ForgotPassword = catchAsync(async (req, res, next) => {
 const SignIn = catchAsync(async (req, res, next) => {
     const { email, password } = req.body
 
-    const token = await service.signIn(email, password)
+    const { token, user } = await service.signIn(email, password)
 
     res.cookie('token', token, cookieConfig)
 
@@ -56,6 +56,7 @@ const SignIn = catchAsync(async (req, res, next) => {
         message: 'You are authenticated',
         data: {
             token,
+            user,
         },
     })
 })
@@ -83,9 +84,19 @@ const SignUp = catchAsync(async (req, res, next) => {
     })
 })
 
+const SignOut = catchAsync(async (req, res, next) => {
+    res.cookie('token', null)
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Signed out sucessfully',
+    })
+})
+
 module.exports = {
     SignIn,
     SignUp,
     ForgotPassword,
     ResetPassword,
+    SignOut,
 }
