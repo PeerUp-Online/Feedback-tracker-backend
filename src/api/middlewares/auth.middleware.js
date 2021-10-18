@@ -35,7 +35,6 @@ module.exports = catchAsync(async (req, res, next) => {
     console.log('verifiedToken: ', verifiedToken);
 
     const freshedUser = await User.findById(verifiedToken.id)
-    
     console.log('freshedUser: ', freshedUser);
 
     /**
