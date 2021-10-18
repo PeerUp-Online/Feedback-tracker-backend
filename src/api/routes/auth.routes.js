@@ -26,5 +26,4 @@ AuthRouter.route('/resetpassword/:token').patch(controller.ResetPassword)
 
 AuthRouter.use(checkAuth)
 
-
 module.exports = AuthRouter

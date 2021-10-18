@@ -10,7 +10,7 @@ process.on('uncaughtException', (err) => {
     )
     process.exit(1)
 })
-
+const http = require('http')
 const chalk = require('chalk')
 const dotEnv = require('dotenv')
 const path = require('path')
@@ -24,10 +24,12 @@ const App = require('./api/app')
 
 const PORT = process.env.PORT || 3000
 
-const server = App.listen(PORT, () =>
+const server = http.createServer(App)
+
+server.listen(PORT, () =>
     console.log(chalk.greenBright(`Server listening at Port ${PORT}...`))
 )
-
+    
 /**
  * Last safety net for any unhandled rejections inside the app
  */

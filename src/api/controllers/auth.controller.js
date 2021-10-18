@@ -5,7 +5,6 @@ const cookieConfig = {
     httpOnly: true,
     secure: process.env.NODE_ENV !== 'development',
 }
-console.log(cookieConfig)
 
 const ResetPassword = catchAsync(async (req, res, next) => {
     const { token } = req.params
@@ -50,7 +49,7 @@ const SignIn = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: 'success',
         message: 'You are authenticated',
-        data: {
+        result: {
             token,
             user,
         },
@@ -74,7 +73,7 @@ const SignUp = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: 'success',
         message: 'Account created successfully',
-        data: { user, token },
+        result: { user, token },
     })
 })
 

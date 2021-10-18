@@ -6,14 +6,11 @@ module.exports = () => {
         mongoose.set('debug', true)
     }
 
-    console.log(process.env.DB_URL)
-
     // Connect to Prod DB using Production creds
     mongoose
-        .connect(process.env.DB_URL, {
-            autoIndex: process.env.NODE_ENV !== 'production',
-        })
-        .then((db) => {
+        .connect(process.env.DB_URL)
+        .then((db) =>
             console.log(`DB Connection Success to: ${db.connection.name}`)
-        })
+        )
+        .catch((err) => console.log(err.message))
 }

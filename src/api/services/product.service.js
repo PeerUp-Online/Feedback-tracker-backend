@@ -5,46 +5,25 @@ const User = require('../models/user.model')
 const Feature = require('../models/feature.model')
 const AppError = require('../helpers/appError')
 
-const GetAllProducts = catchAsync(async (req, res, next) => {
+const getAllProducts = async () => {
     const list = await Product.find().populate('features')
 
-    res.status(200).json({
-        status: 'success',
-        data: list,
-    })
-})
+    return list
+}
 
-const VoteFeature = catchAsync(async (req, res, next) => {
-    const { id } = req.params
-    const { type } = req.body
-
+const voteFeature = async ({ id, type }) => {
     if (type === 'downVote') {
         await Feature.findByIdAndUpdate(id, {
             $inc: { votes: -1 },
-        })
-
-        res.status(200).json({
-            status: 'success',
-            message: 'Feature down voted.',
         })
     } else {
         await Feature.findByIdAndUpdate(id, {
             $inc: { votes: 1 },
         })
-
-        res.status(200).json({
-            status: 'success',
-            message: 'Feature up voted.',
-        })
     }
-})
+}
 
-const AddFeature = catchAsync(async (req, res, next) => {
-    const { id } = req.params
-    const { title, description, catergory } = req.body
-
-    const user = await verifyToken(req.headers.authorization.split(' ')[1])
-
+const addFeature = async ({ user, id, title, description, catergory }) => {
     const newFeature = await Feature.create({
         title,
         description,
@@ -57,33 +36,20 @@ const AddFeature = catchAsync(async (req, res, next) => {
         $push: { features: newFeature.id },
     })
 
-    res.status(200).json({
-        status: 'success',
-        message: 'Feature suggestion added.',
-        data: newFeature,
-    })
-})
+    return newFeature
+}
 
-const GetProductById = catchAsync(async (req, res, next) => {
-    const { id } = req.params
-
+const getProductById = async (id) => {
     const product = await Product.findById(id)
 
     if (!product) {
-        next(new AppError('No Product found with the given ID', 404))
+        throw new AppError('No Product found with the given ID', 404)
     }
 
-    res.status(200).json({
-        status: 'success',
-        data: product,
-    })
-})
+    return product
+}
 
-const AddNewProduct = catchAsync(async (req, res, next) => {
-    const { image, name, url, description } = req.body
-
-    const user = await verifyToken(req.headers.authorization.split(' ')[1])
-
+const addNewProduct = async ({ user, image, name, url, description }) => {
     const newProduct = await Product.create({
         image,
         name,
@@ -95,17 +61,13 @@ const AddNewProduct = catchAsync(async (req, res, next) => {
         $push: { addedProducts: newProduct.id },
     })
 
-    res.status(200).json({
-        status: 'success',
-        message: 'Product added successfully',
-        data: newProduct,
-    })
-})
+    return newProduct
+}
 
 module.exports = {
-    GetAllProducts,
-    AddNewProduct,
-    GetProductById,
-    AddFeature,
-    VoteFeature,
+    getAllProducts,
+    addNewProduct,
+    getProductById,
+    addFeature,
+    voteFeature,
 }
