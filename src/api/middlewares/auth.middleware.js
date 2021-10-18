@@ -8,9 +8,7 @@ module.exports = catchAsync(async (req, res, next) => {
 
     let token
 
-    if (req.cookies.token) {
-        token = req.cookies.token
-    } else if (
+    if (
         req.headers.authorization &&
         req.headers.authorization.startsWith('Bearer')
     ) {
