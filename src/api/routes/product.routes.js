@@ -9,9 +9,6 @@ const ProductRouter = Router()
  */
 ProductRouter.route('/:id').get(productController.GetProductById)
 
-// Check for auth headers
-ProductRouter.use(checkAuth)
-
 /**
  * ? PATCH / add feature to a product
  */
@@ -27,6 +24,6 @@ ProductRouter.route('/').get(productController.GetAllProducts)
 /**
  * ? POST / add a new product
  */
-ProductRouter.route('/addnew').post(productController.AddNewProduct)
+ProductRouter.route('/addnew').post(checkAuth, productController.AddNewProduct)
 
 module.exports = ProductRouter
