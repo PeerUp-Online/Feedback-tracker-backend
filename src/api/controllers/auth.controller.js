@@ -16,6 +16,8 @@ const ResetPassword = catchAsync(async (req, res, next) => {
         password
     )
 
+    res.cookie('token', signedToken, cookieConfig)
+
     res.status(200).json({
         status: 'success',
         token: signedToken,
@@ -46,6 +48,8 @@ const SignIn = catchAsync(async (req, res, next) => {
 
     const { token, user } = await service.signIn(email, password)
 
+    res.cookie('token', token, cookieConfig)
+
     res.status(200).json({
         status: 'success',
         message: 'You are authenticated',
@@ -70,10 +74,21 @@ const SignUp = catchAsync(async (req, res, next) => {
         passwordConfirm,
     })
 
+    res.cookie('token', token, cookieConfig)
+
     res.status(200).json({
         status: 'success',
         message: 'Account created successfully',
         result: { user, token },
+    })
+})
+
+const SignOut = catchAsync(async (req, res, next) => {
+    res.cookie('token', null)
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Signed out sucessfully',
     })
 })
 
@@ -82,4 +97,5 @@ module.exports = {
     SignUp,
     ForgotPassword,
     ResetPassword,
+    SignOut,
 }
