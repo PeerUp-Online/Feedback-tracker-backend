@@ -8,9 +8,10 @@ module.exports = () => {
 
     // Connect to Prod DB using Production creds
     mongoose
-        .connect(process.env.DB_URL)
+        .connect(process.env.DB_URL, {
+            autoIndex: process.env.NODE_ENV !== 'production',
+        })
         .then((db) =>
             console.log(`DB Connection Success to: ${db.connection.name}`)
         )
-        .catch((err) => console.log(err.message))
 }
