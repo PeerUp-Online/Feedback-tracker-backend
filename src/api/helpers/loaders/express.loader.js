@@ -12,7 +12,6 @@ module.exports = (App) => {
      */
     App.use(express.json())
     App.use(cors())
-    App.use(cookieParser())
     
     // Add logger in development
     if (process.NODE_ENV !== 'production') {
