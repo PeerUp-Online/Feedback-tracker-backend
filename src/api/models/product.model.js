@@ -19,6 +19,12 @@ const productSchema = new mongoose.Schema(
                 message: () => 'Please provide an valid URL',
             },
         },
+        createdBy: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'User',
+            required: [true, 'Please provide a author id.'],
+            trim: true,
+        },
         image: {
             type: String,
             required: [true, 'Please provide a product image.'],

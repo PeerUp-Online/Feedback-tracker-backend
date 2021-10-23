@@ -64,6 +64,7 @@ const addNewProduct = async ({ user, image, name, url, description }) => {
         image,
         name,
         url,
+        createdBy: user.id,
         description,
     })
 
