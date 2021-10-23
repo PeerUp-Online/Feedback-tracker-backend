@@ -11,16 +11,26 @@ const getAllProducts = async () => {
     return list
 }
 
-const voteFeature = async ({ id, type }) => {
-    if (type === 'downVote') {
-        await Feature.findByIdAndUpdate(id, {
+const updateFeature = async ({ id, ...data }) => {
+    console.log('data: ', data)
+    if (data.type === 'downVote') {
+        return await Feature.findByIdAndUpdate(id, {
             $inc: { votes: -1 },
         })
-    } else {
-        await Feature.findByIdAndUpdate(id, {
+    }
+    if (data.type === 'upVote') {
+        return await Feature.findByIdAndUpdate(id, {
             $inc: { votes: 1 },
         })
+    } else {
+        return await Feature.findByIdAndUpdate(id, data, {
+            validateBeforeSave: false,
+        })
     }
+}
+
+const deleteFeature = async ({ id }) => {
+    return await Feature.findByIdAndDelete(id)
 }
 
 const addFeature = async ({ user, id, title, description, catergory }) => {
@@ -69,5 +79,6 @@ module.exports = {
     addNewProduct,
     getProductById,
     addFeature,
-    voteFeature,
+    updateFeature,
+    deleteFeature,
 }

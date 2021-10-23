@@ -1,7 +1,7 @@
 const catchAsync = require('../helpers/catchAsync')
 const ProductService = require('../services/product.service')
 
-const AddFeature = catchAsync(async (req, res, next) => {
+const createFeature = catchAsync(async (req, res, next) => {
     const { id } = req.params
     const { title, description, catergory } = req.body
     const user = req.user
@@ -60,29 +60,34 @@ const GetProductById = catchAsync(async (req, res, next) => {
     })
 })
 
-const VoteFeature = async (req, res, next) => {
+const updateFeature = async (req, res, next) => {
     const { id } = req.params
-    const { type } = req.body
+    const data = req.body
 
-    await ProductService.voteFeature({ id, type })
+     await ProductService.updateFeature({ id, ...data })
 
-    if (type === 'downvote') {
-        res.status(200).json({
-            status: 'success',
-            message: 'Feature down voted.',
-        })
-    } else {
-        res.status(200).json({
-            status: 'success',
-            message: 'Feature up voted.',
-        })
-    }
+    res.status(200).json({
+        status: 'success',
+        message: 'Feature updated',
+    })
+}
+
+const deleteFeature = async (req, res, next) => {
+    const { id } = req.params
+
+    await ProductService.deleteFeature({ id })
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Feature Deleted',
+    })
 }
 
 module.exports = {
-    AddFeature,
+    createFeature,
     GetAllProducts,
     AddNewProduct,
     GetProductById,
-    VoteFeature,
+    updateFeature,
+    deleteFeature,
 }

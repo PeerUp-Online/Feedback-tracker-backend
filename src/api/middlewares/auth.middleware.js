@@ -32,10 +32,8 @@ module.exports = catchAsync(async (req, res, next) => {
      * Look for the user in the DB
      */
     const verifiedToken = await verifyToken(token)
-    console.log('verifiedToken: ', verifiedToken);
 
     const freshedUser = await User.findById(verifiedToken.id)
-    console.log('freshedUser: ', freshedUser);
 
     /**
      * if no user found, send back an App Error to the client
